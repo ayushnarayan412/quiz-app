@@ -54,31 +54,31 @@ class _HomePageState extends State<HomePage> {
       super.dispose();
     }
 
-    void nextQuestion() {
-      if (selectedOption == responsiveData[number]['correct_answer']) {
-        score++;
-      }
-      if (number < responsiveData.length - 1) {
-        setState(() {
-          number++;
-          updateShuffledOptions();
-          selectedOption = null;
-          secondsRemaining = 15;
-        });
-      } else {
-        completed();
-      }
+  void nextQuestion() {
+    if (selectedOption == responsiveData[number]['correct_answer']) {
+      score++;
     }
+    if (number < responsiveData.length - 1) {
+      setState(() {
+        number++;
+        updateShuffledOptions();
+        selectedOption = null;
+        secondsRemaining = 15;
+      });
+    } else {
+      completed();
+    }
+  }
 
-    void completed() {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => CompletedPage(
-                    score: score,
-                    totalQuestions: responsiveData.length,
-                  )));
-    }
+  void completed() {
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => CompletedPage(
+                  score: score,
+                  totalQuestions: responsiveData.length,
+                )));
+  }
 
     void updateShuffledOptions() {
       var currentQuestion = responsiveData[number];
@@ -157,9 +157,9 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Center(
                             child: Text(
-                              "Questions ${number + 1}/10",
+                              "Question : ${number + 1}/10",
                               style: const TextStyle(
-                                color: Color(0xffa42fc1),
+                                color: Color.fromARGB(255, 255, 255, 255),
                               ),
                             ),
                           ),
