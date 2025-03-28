@@ -41,18 +41,18 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-    @override
-    void initState() {
-      super.initState();
-      api();
-      startTimer();
-    }
+  @override
+  void initState() {
+    super.initState();
+    api();
+    startTimer();
+  }
 
-    @override
-    void dispose() {
-      _timer?.cancel();
-      super.dispose();
-    }
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   void nextQuestion() {
     if (selectedOption == responsiveData[number]['correct_answer']) {
@@ -80,30 +80,30 @@ class _HomePageState extends State<HomePage> {
                 )));
   }
 
-    void updateShuffledOptions() {
-      var currentQuestion = responsiveData[number];
-      List<String> options =
-          List<String>.from(currentQuestion['incorrect_answers']);
-      options.add(currentQuestion['correct_answer']);
-      options.shuffle();
+  void updateShuffledOptions() {
+    var currentQuestion = responsiveData[number];
+    List<String> options =
+        List<String>.from(currentQuestion['incorrect_answers']);
+    options.add(currentQuestion['correct_answer']);
+    options.shuffle();
 
+    setState(() {
+      shuffledOptions = options;
+    });
+  }
+
+  void startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
-        shuffledOptions = options;
+        if (secondsRemaining > 0) {
+          secondsRemaining--;
+        } else {
+          nextQuestion();
+          secondsRemaining = 15;
+        }
       });
-    }
-
-    void startTimer() {
-      _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-        setState(() {
-          if (secondsRemaining > 0) {
-            secondsRemaining--;
-          } else {
-            nextQuestion();
-            secondsRemaining = 15;
-          }
-        });
-      });
-    }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

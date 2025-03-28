@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class IntroPage extends StatelessWidget {
@@ -6,6 +7,18 @@ class IntroPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        foregroundColor: Colors.transparent,
+        backgroundColor: const Color.fromARGB(255, 119, 90, 119),
+        actions: [
+          IconButton(
+              onPressed: () {
+                FirebaseAuth.instance.signOut();
+              },
+              color: Colors.amber,
+              icon: const Icon(Icons.logout))
+        ],
+      ),
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -21,41 +34,64 @@ class IntroPage extends StatelessWidget {
             ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
           ),
           Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const Text(
-                'Quizzy',
-                style: TextStyle(
-                    fontSize: 50,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.yellow,
-                    shadows: [
-                      Shadow(
-                          blurRadius: 10.0,
-                          color: Colors.black,
-                          offset: Offset(5.0, 5.0))
-                    ]),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Text(
+                  'Welcome ${FirebaseAuth.instance.currentUser?.displayName}!',
+                  style: const TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 72, 128, 249),
+                      shadows: [
+                        Shadow(
+                            blurRadius: 10.0,
+                            color: Colors.black,
+                            offset: Offset(5.0, 5.0))
+                      ]),
+                ),
+              ),
+              const SizedBox(
+                height: 260,
+              ),
+              const Center(
+                child: Text(
+                  'QUIZ APP',
+                  style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 72, 128, 249),
+                      shadows: [
+                        Shadow(
+                            blurRadius: 10.0,
+                            color: Colors.black,
+                            offset: Offset(5.0, 5.0))
+                      ]),
+                ),
               ),
               const SizedBox(
                 height: 20,
               ),
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/homepage');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.blue,
-                    padding: const EdgeInsets.symmetric(horizontal: 50,vertical: 15),
-                    textStyle: const TextStyle(
-                      fontSize: 20
+              Center(
+                child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(context, '/homepage');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.blue,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 50, vertical: 15),
+                      textStyle: const TextStyle(fontSize: 20),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      elevation: 5.0,
                     ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                    ),
-                    elevation: 5.0,
-                  ),
-                  child: const Text('Start quiz'))
+                    child: const Text('Start quiz')),
+              )
             ],
           )
         ],

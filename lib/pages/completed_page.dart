@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:new_project/pages/intro_page.dart';
 
 class CompletedPage extends StatelessWidget {
   final int score;
@@ -55,7 +56,7 @@ class CompletedPage extends StatelessWidget {
                 ),),
                 const SizedBox(height: 20,),
                 ElevatedButton.icon(onPressed: (){
-                  Navigator.restorablePushNamedAndRemoveUntil(context, '/', (route)=>false);
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> const IntroPage()));
 
                 },
                 icon: const Icon(Icons.refresh,color: Colors.white,),
