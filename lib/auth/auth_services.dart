@@ -36,12 +36,15 @@ class AuthServices {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       Fluttertoast.showToast(msg: 'login successful');
+      Navigator.pushReplacementNamed(context, '/intro');
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user not found') {
-        Fluttertoast.showToast(msg: "no user found with this email");
-      } else if (e.code == 'wrong-password') {
-        Fluttertoast.showToast(msg: 'Enter correct password');
-      }
+      if (e.code == 'user-not-found') {
+      Fluttertoast.showToast(msg: "No user found with this email");
+    } else if (e.code == 'wrong-password') {
+      Fluttertoast.showToast(msg: 'Incorrect password');
+    } else {
+      Fluttertoast.showToast(msg: e.message ?? 'Login failed');
+    }
     }
   }
 }

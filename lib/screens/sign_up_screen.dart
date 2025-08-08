@@ -20,172 +20,133 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 43, 43, 43),
+        backgroundColor:  const Color(0xFF1B262C),
+
         elevation: 0,
         title: Text(
-          login ? 'Signin' : 'Create your account',
+          login ? 'Sign In' : 'Sign Up',
           style: const TextStyle(color: Colors.white),
         ),
       ),
-      body: Form(
-          key: _formKey,
-          child: Container(
-            padding: const EdgeInsets.all(14),
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('assets/images/quiz_logo.png'),
-                    fit: BoxFit.cover)),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // full name in login page for new user
-                login
-                    ? Container()
-                    : TextFormField(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        padding: const EdgeInsets.all(14),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  // Full Name
+                  if (!login)
+                    buildInputContainer(
+                      child: TextFormField(
                         key: const ValueKey('fullname'),
                         style: textStyle(),
-                        decoration: InputDecoration(
-                            hintText: 'Enter full name',
-                            hintStyle: textStyle(),
-                            prefixIcon: const Icon(
-                              Icons.person_outlined,
-                              color: Colors.white,
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: Colors.cyan, width: 1),
-                                borderRadius: BorderRadius.circular(10)),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                    color: Colors.cyan, width: 1))),
+                        decoration: buildInputDecoration(
+                          hint: 'Enter full name',
+                          icon: Icons.person_outlined,
+                        ),
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'please enter full name';
-                          } else {
-                            return null;
+                            return 'Please enter full name';
                           }
+                          return null;
                         },
-                        onSaved: (value) {
-                          setState(() {
-                            fullname = value!;
-                          });
-                        },
+                        onSaved: (value) => fullname = value!,
                       ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  key: const ValueKey('email'),
-                  style: textStyle(),
-                  decoration: InputDecoration(
-                      hintText: 'Enter Email',
-                      hintStyle: textStyle(),
-                      prefixIcon: const Icon(
-                        Icons.email_outlined,
-                        color: Colors.white,
+                    ),
+                  const SizedBox(height: 10),
+                  // Email
+                  buildInputContainer(
+                    child: TextFormField(
+                      key: const ValueKey('email'),
+                      style: textStyle(),
+                      decoration: buildInputDecoration(
+                        hint: 'Enter Email',
+                        icon: Icons.email_outlined,
                       ),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              const BorderSide(color: Colors.cyan, width: 1),
-                          borderRadius: BorderRadius.circular(10)),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              const BorderSide(color: Colors.cyan, width: 1))),
-                  validator: (value) {
-                    if (value!.isEmpty || !value.contains('@')) {
-                      return 'please enter valid email';
-                    } else {
-                      return null;
-                    }
-                  },
-                  onSaved: (value) {
-                    setState(() {
-                      email = value!;
-                    });
-                  },
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                //password
-                TextFormField(
-                  style: textStyle(),
-                  key: const ValueKey('password'),
-                  obscureText: hidePassword,
-                  decoration: InputDecoration(
-                      hintText: 'Enter a password',
-                      hintStyle: textStyle(),
-                      prefixIcon: const Icon(
-                        Icons.lock_outline,
-                        color: Colors.white,
-                      ),
-                      suffixIcon: IconButton(
+                      validator: (value) {
+                        if (value!.isEmpty || !value.contains('@')) {
+                          return 'Please enter a valid email';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) => email = value!,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  // Password
+                  buildInputContainer(
+                    child: TextFormField(
+                      key: const ValueKey('password'),
+                      obscureText: hidePassword,
+                      style: textStyle(),
+                      decoration: buildInputDecoration(
+                        hint: 'Enter a password',
+                        icon: Icons.lock_outline,
+                        suffix: IconButton(
                           onPressed: () => setState(() {
-                                hidePassword = !hidePassword;
-                              }),
-                          icon: hidePassword
-                              ? const Icon(
-                                  Icons.visibility,
-                                  color: Colors.white,
-                                )
-                              : const Icon(
-                                  Icons.visibility_off,
-                                  color: Colors.white,
-                                )),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              color: Colors.cyanAccent, width: 1),
-                          borderRadius: BorderRadius.circular(10)),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(
-                              color: Colors.cyanAccent, width: 1))),
-                  validator: (value) {
-                    if (value!.length < 6) {
-                      return 'please enter password of length 6';
-                    } else {
-                      return null;
-                    }
-                  },
-                  onSaved: (value) {
-                    setState(() {
-                      password = value!;
-                    });
-                  },
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  height: 50,
-                  width: double.infinity,
-                  child: ElevatedButton(
+                            hidePassword = !hidePassword;
+                          }),
+                          icon: Icon(
+                            hidePassword
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value!.length < 6) {
+                          return 'Password must be at least 6 characters';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) => password = value!,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  // Signup Button
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
                           login
-                              ? AuthServices.signinUser(
-                                  email, password, context)
+                              ? AuthServices.signinUser(email, password, context)
                               : AuthServices.signupUser(
                                   email, password, fullname, context);
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          backgroundColor:
-                              const Color.fromARGB(255, 177, 215, 234)),
+                        backgroundColor:
+                            const Color.fromARGB(255, 177, 215, 234),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        elevation: 6,
+                      ),
                       child: Text(
-                        login ? ' Signin' : 'Signup',
-                      )),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextButton(
+                        login ? 'Signin' : 'Signup',
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.black),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  // Switch to Login / SignUp
+                  TextButton(
                     onPressed: () {
                       setState(() {
                         login = !login;
@@ -193,17 +154,60 @@ class _SignUpPageState extends State<SignUpPage> {
                     },
                     child: Text(
                       login
-                          ? "Don't have an account ? Signin"
-                          : 'Already have an acoount ? Login',
+                          ? "Don't have an account? Signup"
+                          : 'Already have an account? Login',
                       style: textStyle(),
-                    ))
-              ],
+                    ),
+                  )
+                ],
+              ),
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 
   TextStyle textStyle() {
     return const TextStyle(color: Colors.white);
+  }
+
+  InputDecoration buildInputDecoration({
+    required String hint,
+    required IconData icon,
+    Widget? suffix,
+  }) {
+    return InputDecoration(
+      hintText: hint,
+      hintStyle: const TextStyle(color: Colors.white70),
+      prefixIcon: Icon(icon, color: Colors.white),
+      suffixIcon: suffix,
+      filled: true,
+      fillColor: Colors.white.withOpacity(0.05),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Colors.cyanAccent),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Colors.cyanAccent, width: 2),
+      ),
+    );
+  }
+
+  Widget buildInputContainer({required Widget child}) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black54,
+            blurRadius: 6,
+            offset: Offset(2, 4),
+          )
+        ],
+      ),
+      child: child,
+    );
   }
 }
